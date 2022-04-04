@@ -56,7 +56,7 @@ def transform_to_pillow_image(tensor_image) -> Image.Image:
     return Image.fromarray(ndarr)
 
 
-@app.post('/nst')
+@app.post('/nst/')
 async def neural_style_transfer(file: UploadFile = File(...)):
     print(file.filename)
     print(file.content_type)
