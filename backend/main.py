@@ -72,3 +72,8 @@ async def neural_style_transfer(file: UploadFile = File(...)):
     response_image.seek(0)
 
     return StreamingResponse(response_image, media_type='image/jpeg')
+
+
+@app.get('/')
+async def hello_world():
+    return {'Message': 'Hello World'}
