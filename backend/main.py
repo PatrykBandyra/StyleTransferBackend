@@ -8,6 +8,7 @@ import os
 import torch
 from torchvision import transforms, utils
 import pystiche
+from pystiche.image.io import export_to_pil
 
 app = FastAPI()
 
@@ -50,10 +51,10 @@ def perform_nst(input_image: Image.Image) -> torch.Tensor:
     return output_image_tensor
 
 
-def transform_to_pillow_image(tensor_image) -> Image.Image:
-    grid = utils.make_grid(tensor_image)
-    ndarr = grid.mul(255).add_(0.5).clamp_(0, 255).permute(1, 2, 0).to('cpu', torch.uint8).numpy()
-    return Image.fromarray(ndarr)
+# def transform_to_pillow_image(tensor_image) -> Image.Image:
+#     grid = utils.make_grid(tensor_image)
+#     ndarr = grid.mul(255).add_(0.5).clamp_(0, 255).permute(1, 2, 0).to('cpu', torch.uint8).numpy()
+#     return Image.fromarray(ndarr)
 
 
 @app.post('/nst')
@@ -62,7 +63,8 @@ async def neural_style_transfer(file: UploadFile = File(...)):
         raise HTTPException(400, detail='Invalid file type')
 
     original_image = Image.open(file.file)
-    nst_image = transform_to_pillow_image(perform_nst(original_image))
+    # nst_image = transform_to_pillow_image(perform_nst(original_image))
+    nst_image = export_to_pil(perform_nst(original_image))
 
     response_image = BytesIO()
     nst_image.save(response_image, 'JPEG')
