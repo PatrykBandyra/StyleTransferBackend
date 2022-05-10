@@ -12,8 +12,6 @@ from pystiche.image.io import export_to_pil
 
 app = FastAPI()
 
-print('Running')
-
 if torch.cuda.is_available():
     device = torch.device('cuda')
 else:
@@ -53,10 +51,10 @@ def perform_nst(input_image: Image.Image) -> torch.Tensor:
     return output_image_tensor
 
 
-# def transform_to_pillow_image(tensor_image) -> Image.Image:
-#     grid = utils.make_grid(tensor_image)
-#     ndarr = grid.mul(255).add_(0.5).clamp_(0, 255).permute(1, 2, 0).to('cpu', torch.uint8).numpy()
-#     return Image.fromarray(ndarr)
+def transform_to_pillow_image(tensor_image) -> Image.Image:
+    grid = utils.make_grid(tensor_image)
+    ndarr = grid.mul(255).add_(0.5).clamp_(0, 255).permute(1, 2, 0).to('cpu', torch.uint8).numpy()
+    return Image.fromarray(ndarr)
 
 
 @app.post('/nst')
@@ -66,14 +64,15 @@ async def neural_style_transfer(file: UploadFile = File(...)):
 
     original_image = Image.open(file.file)
     print(f'Original image size: {original_image.size}')
-    # nst_image = transform_to_pillow_image(perform_nst(original_image))
-    nst_image = perform_nst(original_image)
-    print(f'Transformed tensor image size: {nst_image.size()}')
-    pillow_nst_image = export_to_pil(nst_image)
-    print(f'Transformed pillow image size: {pillow_nst_image.size}')
+    nst_image = transform_to_pillow_image(perform_nst(original_image))
+    # nst_image = perform_nst(original_image)
+    # print(f'Transformed tensor image size: {nst_image.size()}')
+    # pillow_nst_image = export_to_pil(nst_image)
+    # print(f'Transformed pillow image size: {pillow_nst_image.size}')
 
     response_image = BytesIO()
-    pillow_nst_image.save(response_image, 'JPEG')
+    # pillow_nst_image.save(response_image, 'JPEG')
+    nst_image.save(response_image, 'JPEG')
     response_image.seek(0)
 
     return StreamingResponse(response_image, media_type='image/jpeg')
