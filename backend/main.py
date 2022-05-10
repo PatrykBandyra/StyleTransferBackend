@@ -43,7 +43,7 @@ transformer.eval()
 def perform_nst(input_image: Image.Image) -> torch.Tensor:
     image_tensor = transforms.ToTensor()(input_image)
     if len(list(image_tensor.size())) == 4:
-        image_tensor = image_tensor.unsqueeze(0)
+        image_tensor = image_tensor.squeeze(0)
     image_tensor.to(device)
 
     with torch.no_grad():
