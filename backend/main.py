@@ -12,6 +12,8 @@ from pystiche.image.io import export_to_pil
 
 app = FastAPI()
 
+print('Running')
+
 if torch.cuda.is_available():
     device = torch.device('cuda')
 else:
