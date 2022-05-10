@@ -63,8 +63,12 @@ async def neural_style_transfer(file: UploadFile = File(...)):
         raise HTTPException(400, detail='Invalid file type')
 
     original_image = Image.open(file.file)
+    print(f'Original image size: {original_image.size}')
     # nst_image = transform_to_pillow_image(perform_nst(original_image))
-    nst_image = export_to_pil(perform_nst(original_image))
+    nst_image = perform_nst(original_image)
+    print(f'Transformed tensor image size: {nst_image.size()}')
+    pillow_nst_image = export_to_pil(nst_image)
+    print(f'Transformed pillow image size: {pillow_nst_image.size}')
 
     response_image = BytesIO()
     nst_image.save(response_image, 'JPEG')
