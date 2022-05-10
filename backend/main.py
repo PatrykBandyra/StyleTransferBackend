@@ -71,7 +71,7 @@ async def neural_style_transfer(file: UploadFile = File(...)):
     print(f'Transformed pillow image size: {pillow_nst_image.size}')
 
     response_image = BytesIO()
-    nst_image.save(response_image, 'JPEG')
+    pillow_nst_image.save(response_image, 'JPEG')
     response_image.seek(0)
 
     return StreamingResponse(response_image, media_type='image/jpeg')
