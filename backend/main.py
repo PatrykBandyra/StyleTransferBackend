@@ -68,7 +68,7 @@ async def neural_style_transfer(file: UploadFile = File(...)):
     nst_image = perform_nst(original_image)
     print(f'Transformed tensor image size: {nst_image.size()}')
     pillow_nst_image = export_to_pil(nst_image)
-    # print(f'Transformed pillow image size: {pillow_nst_image.size}')
+    print(f'Transformed pillow image size: {pillow_nst_image.size}')
 
     response_image = BytesIO()
     pillow_nst_image.save(response_image, 'JPEG')
