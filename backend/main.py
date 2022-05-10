@@ -59,7 +59,7 @@ def perform_nst(input_image: Image.Image) -> torch.Tensor:
 #     return Image.fromarray(ndarr)
 
 
-@app.post('/nst')
+@app.post('/nst/')
 async def neural_style_transfer(file: UploadFile = File(...)):
     if file.content_type not in ['image/jpeg']:
         raise HTTPException(400, detail='Invalid file type')
