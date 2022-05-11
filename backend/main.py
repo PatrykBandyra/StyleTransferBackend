@@ -63,8 +63,6 @@ async def neural_style_transfer(file: UploadFile = File(...)):
 
     original_image = Image.open(file.file)
     original_image_tensor = import_from_pil(original_image, device=device, make_batched=True)
-    # nst_image = transform_to_pillow_image(perform_nst(original_image))
-    # nst_image = perform_nst(original_image)
     nst_image = transformer(original_image_tensor)
     pillow_nst_image = export_to_pil(nst_image)
 
