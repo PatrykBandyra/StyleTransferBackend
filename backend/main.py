@@ -92,7 +92,7 @@ async def test(file: UploadFile = File(...)):
     with mp_selfie_segmentation.SelfieSegmentation(model_selection=0) as selfie_segmentation:
         image_height, image_width, _ = original_image_numpy.shape
 
-        bg_image = np.zeros((image_height, image_width), dtype=np.uint8)
+        bg_image = np.zeros(original_image_numpy.shape, dtype=np.uint8)
         bg_image[:] = BG_COLOR
 
         # Selfie Segmentation
