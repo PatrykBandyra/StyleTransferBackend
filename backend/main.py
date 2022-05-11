@@ -78,7 +78,7 @@ async def test(file: UploadFile = File(...)):
     if file.content_type not in ['image/jpeg']:
         raise HTTPException(400, detail='Invalid file type')
 
-    image = cv2.imread(file)
+    image = cv2.imread(file.file)
     print(image.shape)
 
 
